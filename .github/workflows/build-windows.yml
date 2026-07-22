@@ -7,6 +7,13 @@ on:
       - 'mail_tool.py'
       - 'requirements.txt'
       - '.github/workflows/build-windows.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - 'mail_tool.py'
+      - 'requirements.txt'
+      - '.github/workflows/build-windows.yml'
+      - 'BUILD_TRIGGER.txt'
   workflow_dispatch:
 
 permissions:
@@ -24,16 +31,17 @@ jobs:
         run: python -m pip install -r requirements.txt
       - name: Build EXE
         run: pyinstaller --noconfirm --clean --onefile --windowed --name "对账及询证函邮件发送工具" --collect-all pandas --hidden-import win32timezone mail_tool.py
-      - name: Copy release file
+      - name: Copy artifact file
         shell: powershell
         run: Copy-Item "dist/对账及询证函邮件发送工具.exe" "dist/mail_tool_windows.exe"
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: 对账及询证函邮件发送工具
+          name: mail-tool-windows
           path: dist/mail_tool_windows.exe
           if-no-files-found: error
       - name: Publish latest build
+        if: github.event_name != 'pull_request'
         uses: softprops/action-gh-release@v2
         with:
           tag_name: build-latest
