@@ -1,0 +1,2 @@
+Build Windows EXE for PDF and Excel attachment support.
+Retry with ASCII output filename.
