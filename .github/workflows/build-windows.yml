@@ -30,10 +30,7 @@ jobs:
       - name: Install dependencies
         run: python -m pip install -r requirements.txt
       - name: Build EXE
-        run: pyinstaller --noconfirm --clean --onefile --windowed --name "对账及询证函邮件发送工具" --collect-all pandas --hidden-import win32timezone mail_tool.py
-      - name: Copy artifact file
-        shell: powershell
-        run: Copy-Item "dist/对账及询证函邮件发送工具.exe" "dist/mail_tool_windows.exe"
+        run: pyinstaller --noconfirm --clean --onefile --windowed --name mail_tool_windows --collect-all pandas --hidden-import win32timezone mail_tool.py
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
@@ -45,6 +42,6 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: build-latest
-          name: 最新构建
+          name: latest-build
           prerelease: true
           files: dist/mail_tool_windows.exe
