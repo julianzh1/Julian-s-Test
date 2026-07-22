@@ -9,6 +9,9 @@ on:
       - '.github/workflows/build-windows.yml'
   workflow_dispatch:
 
+permissions:
+  contents: write
+
 jobs:
   build:
     runs-on: windows-latest
@@ -27,3 +30,10 @@ jobs:
           name: 对账及询证函邮件发送工具
           path: dist/对账及询证函邮件发送工具.exe
           if-no-files-found: error
+      - name: Publish latest build
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: build-latest
+          name: 最新构建
+          prerelease: true
+          files: dist/对账及询证函邮件发送工具.exe
