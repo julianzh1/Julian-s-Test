@@ -1,0 +1,28 @@
+name: Build Classic PDF EXE
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'classic/**'
+      - '.github/workflows/build-classic-pdf.yml'
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.14'
+      - name: Install dependencies
+        run: python -m pip install -r classic/requirements.txt
+      - name: Build original-style EXE
+        run: pyinstaller --noconfirm --clean --onefile --windowed --noupx --name "对账邮件发送软件" --hidden-import win32timezone classic/mei.py
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: classic-pdf-mail-tool
+          path: dist/对账邮件发送软件.exe
+          if-no-files-found: error
