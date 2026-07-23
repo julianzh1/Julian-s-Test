@@ -1,0 +1,5 @@
+pandas
+openpyxl
+xlrd
+pywin32
+pyinstaller
